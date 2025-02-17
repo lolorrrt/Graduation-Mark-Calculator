@@ -16,5 +16,5 @@ Hochrechner für die Abinoten zu jedem Zeitpunkt.
 [UML Diagramm zeichner](https://app.diagrams.net/)
 
 ## Tasks
- -Thilo: Fach
+ -Thilo: Fach  
  -Laurence: Wahl
