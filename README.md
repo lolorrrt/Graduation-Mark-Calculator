@@ -10,3 +10,7 @@ Hochrechner für die Abinoten zu jedem Zeitpunkt.
  - Hochrechnung für das Abizeugnis
  - Optionale Speicherung in einer Datei in Klartext
  - Optional Diagramme zur Tendenz
+
+## Links
+
+[UML Diagramm zeichner](https://app.diagrams.net/)
