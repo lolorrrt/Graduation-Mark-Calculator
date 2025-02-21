@@ -64,7 +64,8 @@
     margin-top: 8px;
 }
 
-.options{
+.subjectOptions,
+.courseCreditOptions{
     width: 50%;
     align-self: flex-end;
     border: solid red;
