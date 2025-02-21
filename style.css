@@ -64,3 +64,10 @@
     margin-top: 8px;
 }
 
+.options{
+    width: 50%;
+    align-self: flex-end;
+    border: solid red;
+    border-radius: 8px;
+}
+
