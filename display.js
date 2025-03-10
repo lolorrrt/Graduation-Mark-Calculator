@@ -31,9 +31,7 @@ function createCourseCreditSelection(index){
     document.getElementsByClassName("course")[index].appendChild(selectElement);
 }
 
-for (let i = 0; i < subj.length; i++) {
+for (let i = 0; i < subj.length; i++) 
         createSubjectSelection(i);
-}
-for (let i = 0; i < courseCredits.length; i++) {
+for (let i = 0; i < courseCredits.length; i++)
     createCourseCreditSelection(i);
-}
