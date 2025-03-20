@@ -64,6 +64,10 @@ function createCourseCreditSelection(index){
     const selectElement = document.createElement('select');
     selectElement.className = "courseCreditOptions";
 
+    let firstOption = document.createElement('option');
+    firstOption.textContent = "Nicht belegt!";
+    selectElement.appendChild(firstOption);
+
     for (let i = 0; i<16;i++){
         options[i] = document.createElement('option');
         options[i].value = i;
