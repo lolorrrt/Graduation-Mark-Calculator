@@ -11,7 +11,6 @@ function createSubjects(){
         subjects[i] = document.createElement("div");
         subjects[i].className = "subject";
         calculationElement.append(subjects[i]);
-        subjects[i].innerHTML = i;
     }
     return subjects; 
 }
@@ -37,11 +36,13 @@ function createGridElements(){
 }
 
 function createCourseElements(){
-    let courses = [];
-    for (let i = 0; i< 12;i++){
-        courses[i] = document.createElement("div");
-        courses[i].className = "course";
-        grids[i].append(courses[i]);
+    let subjectCourses = [];
+    for (let j = 0; j<12;j++){
+        for (let i = 0; i< 4;i++){
+            subjectCourses[i] = document.createElement("div");
+            subjectCourses[i].className = "course";
+            grids[j].append(subjectCourses[i]);
+        }
     }
     return grids; 
 }
