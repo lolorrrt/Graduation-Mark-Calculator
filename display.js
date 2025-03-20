@@ -2,7 +2,6 @@ import { MoeglicheFaecher, Anforderungsbereiche, FachTyp, Kurs } from "./javascr
 var subj = document.getElementsByClassName("title");
 var courseCredits = document.getElementsByClassName("course");
 
-
 function createSubjectSelection(index) {  
     const selectElement = document.createElement('select');
     selectElement.className = "subjectOptions";
