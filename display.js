@@ -2,6 +2,20 @@ import { MoeglicheFaecher, Anforderungsbereiche, FachTyp, Kurs } from "./javascr
 var subj = document.getElementsByClassName("title");
 var courseCredits = document.getElementsByClassName("course");
 
+const calculationElement = document.getElementById("calculation");
+
+function createSubjects(){
+    var subjects = [];
+    for (let i = 0; i< 12;i++){
+        subjects[i] = document.createElement("div");
+        subjects[i].className = "subject";
+        calculationElement.append(subjects[i]);
+    }
+    return subjects; 
+}
+
+
+
 function createSubjectSelection(index) {  
     const selectElement = document.createElement('select');
     selectElement.className = "subjectOptions";
@@ -28,7 +42,7 @@ function createCourseCreditSelection(index){
     }
     document.getElementsByClassName("course")[index].appendChild(selectElement);
 }
-
+createSubjects();
 for (let i = 0; i < subj.length; i++) 
         createSubjectSelection(i);
 for (let i = 0; i < courseCredits.length; i++)
