@@ -1,7 +1,5 @@
 
-
-
-class Fach {
+export class Fach {
 
     #fachTyp;
     #isLeistungsfach;

@@ -1,20 +1,19 @@
-
+import { MoeglicheFaecher, Anforderungsbereiche, FachTyp, Kurs } from "./javascript/kurs.mjs";
 var subj = document.getElementsByClassName("title");
 var courseCredits = document.getElementsByClassName("course");
 
-const faecher = ["Wählen Sie ein Fach aus", "Deutsch", "Englisch", "Französisch", "Latein", "Spanisch", "Kunst", "Musik", "Geschichte", "Gemeinschaftskunde", "Geografie", "Wirtschaft", "Religion", "Ethik", "Mathe", "Physik", "Chemie", "Biologie", "NWT", "Informatik", "Philosophie", "Psychologie", "Seminarkurs", "Sport"];
 
 function createSubjectSelection(index) {  
-    const options = [];
     const selectElement = document.createElement('select');
     selectElement.className = "subjectOptions";
-    
-    for (let i = 0; i < faecher.length; i++) {
-        options[i] = document.createElement('option');
-        options[i].value = faecher[i];
-        options[i].textContent = faecher[i];
-        selectElement.appendChild(options[i]);
-    }
+    const allFaecher = Object.values(MoeglicheFaecher);
+
+    allFaecher.forEach((element) => {
+        let newOption = document.createElement('option');
+        newOption.value = element.name;
+        newOption.textContent = element.name;
+        selectElement.appendChild(newOption);
+    });
     document.getElementsByClassName("title")[index].appendChild(selectElement);
 }
 function createCourseCreditSelection(index){
