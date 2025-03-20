@@ -3,18 +3,48 @@ var subj = document.getElementsByClassName("title");
 var courseCredits = document.getElementsByClassName("course");
 
 const calculationElement = document.getElementById("calculation");
+let subjects = createSubjects();
 
 function createSubjects(){
-    var subjects = [];
+    let subjects = [];
     for (let i = 0; i< 12;i++){
         subjects[i] = document.createElement("div");
         subjects[i].className = "subject";
         calculationElement.append(subjects[i]);
+        subjects[i].innerHTML = i;
     }
     return subjects; 
 }
 
+function createTitleElements(){
+    let titles = [];
+    for (let i = 0; i< 12;i++){
+        titles[i] = document.createElement("div");
+        titles[i].className = "title";
+        subjects[i].append(titles[i]);
+    }
+    return titles; 
+}
 
+function createGridElements(){
+    let grids = [];
+    for (let i = 0; i< 12;i++){
+        grids[i] = document.createElement("div");
+        grids[i].className = "grid";
+        subjects[i].append(grids[i]);
+    }
+    return grids; 
+}
+
+function createCourseElements(){
+    let courses = [];
+    for (let i = 0; i< 12;i++){
+        courses[i] = document.createElement("div");
+        courses[i].className = "course";
+        grids[i].append(courses[i]);
+    }
+    return grids; 
+}
 
 function createSubjectSelection(index) {  
     const selectElement = document.createElement('select');
@@ -42,7 +72,10 @@ function createCourseCreditSelection(index){
     }
     document.getElementsByClassName("course")[index].appendChild(selectElement);
 }
-createSubjects();
+//createSubjects();
+createTitleElements();
+var grids = createGridElements();
+createCourseElements();
 for (let i = 0; i < subj.length; i++) 
         createSubjectSelection(i);
 for (let i = 0; i < courseCredits.length; i++)
