@@ -1,74 +1,69 @@
 #mode-select,
 #score,
-.subject,
-.title{
+.subject {
     border: solid red;
     border-radius: 8px;
 }
 
-#mode-select{
+#mode-select {
     height: 100px;
     margin-bottom: 8px;
 }
 
-#score{
+#score {
     height: 100px;
     margin-top: 8px;
 }
-#calculation{
+
+#calculation {
     display: grid;
     grid-template-columns: auto auto auto;
     gap: 8px 8px;
 }
-.subject{
+
+.subject {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 8px;
 }
 
-.grid{
-    margin-left: auto;
-    margin-right: auto;
+.grid {
     display: grid;
     grid-template-columns: auto auto;
     gap: 8px 8px;
-    width: 80%;
-    height: 20%;
     padding: 8px;
 }
 
 .course,
-.title{
+.title {
     padding: 20px;
-    font-size: auto;
     border-width: 1px;
     border-color: #CCCCCC;
-    background-color: #FFFFFF;
-    color: #000000;
     border-style: solid;
-    border-radius: 0px;
-    box-shadow: 0px 0px 5px rgba(66,66,66,.75);
-    text-shadow: 0px 0px 5px rgba(66,66,66,.75);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
-.course{
-    width: 75%;
-    height: 25%;
+.courseHeading,
+.fachHeading {
+    font-size: 25px;
 }
 
-.title{
-    height: 10%;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
+.course {}
+
+.title {
     margin-top: 8px;
 }
 
 .subjectOptions,
-.courseCreditOptions{
-    width: 50%;
+.courseCreditOptions {
+    padding: 4px;
+    font-size: 20px;
     align-self: flex-end;
     border: solid red;
     border-radius: 8px;
 }
-

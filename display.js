@@ -20,6 +20,10 @@ function createTitleElements(){
     for (let i = 0; i< 12;i++){
         titles[i] = document.createElement("div");
         titles[i].className = "title";
+        let fachHeading =  document.createElement("div");
+        fachHeading.className = "fachHeading";
+        fachHeading.textContent = `Fach`;
+        titles[i].append(fachHeading);
         subjects[i].append(titles[i]);
     }
     return titles; 
@@ -41,6 +45,10 @@ function createCourseElements(){
         for (let i = 0; i< 4;i++){
             subjectCourses[i] = document.createElement("div");
             subjectCourses[i].className = "course";
+            let courseHeading =  document.createElement("div");
+            courseHeading.className = "courseHeading";
+            courseHeading.textContent = `H${i+1}`;
+            subjectCourses[i].append(courseHeading);
             grids[j].append(subjectCourses[i]);
         }
     }
@@ -60,6 +68,7 @@ function createSubjectSelection(index) {
     });
     document.getElementsByClassName("title")[index].appendChild(selectElement);
 }
+
 function createCourseCreditSelection(index){
     const options = [];
     const selectElement = document.createElement('select');
@@ -77,7 +86,7 @@ function createCourseCreditSelection(index){
     }
     document.getElementsByClassName("course")[index].appendChild(selectElement);
 }
-//createSubjects();
+
 createTitleElements();
 var grids = createGridElements();
 createCourseElements();
