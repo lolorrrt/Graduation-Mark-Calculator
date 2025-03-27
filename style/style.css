@@ -13,3 +13,12 @@ body {
     font-family: "Inter", sans-serif;
     box-sizing: border-box;
 }
+
+#mainHeading {
+    font-size: 40px;
+    font-weight: bolder;
+    color: var(--text);
+    margin: 10px auto;
+    text-align: center;
+    text-decoration: underline solid 8px var(--accent);
+}
