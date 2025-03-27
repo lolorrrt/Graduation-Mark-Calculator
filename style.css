@@ -1,8 +1,17 @@
+:root {
+    --text: #262532;
+    --background: #f2f2f4;
+    --primary: #8027ce;
+    --secondary: #ebdbff;
+    --accent: #bb3dff;
+}
+
 #mode-select,
 #score,
 .subject {
-    border: solid red;
+    border: 2px solid var(--accent);
     border-radius: 8px;
+    background-color: var(--background);
 }
 
 #mode-select {
@@ -38,10 +47,6 @@
 .course,
 .title {
     padding: 20px;
-    border-width: 1px;
-    border-color: #CCCCCC;
-    border-style: solid;
-    border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,10 +58,17 @@
     font-size: 25px;
 }
 
-.course {}
+.course {
+    background-color: var(--secondary);
+    border-radius: 10px;
+    color: var(--text);
+}
 
 .title {
     margin-top: 8px;
+    background-color: var(--primary);
+    color: var(--background);
+    border-radius: 12px;
 }
 
 .subjectOptions,
@@ -64,6 +76,7 @@
     padding: 4px;
     font-size: 20px;
     align-self: flex-end;
-    border: solid red;
+    background-color: var(--background);
     border-radius: 8px;
+    color: var(--text);
 }
