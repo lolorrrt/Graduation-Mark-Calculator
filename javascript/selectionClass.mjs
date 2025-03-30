@@ -1,4 +1,4 @@
-class selection{
+export class selection{
 
     #listSubjects = [];
     constructor(listSubjects){

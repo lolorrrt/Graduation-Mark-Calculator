@@ -100,12 +100,12 @@ export class semesterStructureAppender{
 
         let courseHeading =  document.createElement("div");
         courseHeading.className = "courseHeading";
-        courseList.forEach((element) =>{
+        courseList.forEach((element, index) =>{
             element = semester.cloneNode();
             let semesterElement = element;
             element = courseHeading.cloneNode();
+            element.innerHTML = `H${index+1}`;
             semesterElement.append(element);
-            courseHeading.textContent = `test`;
             document.getElementsByClassName("grid")[count].append(semesterElement);    
         });
     }
