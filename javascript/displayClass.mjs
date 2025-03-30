@@ -1,7 +1,7 @@
 import { MoeglicheFaecher} from "./kurs.mjs";
 
 let amountSubjects = 12;
-const calculationElement = document.getElementsByClassName("calculation")[0];
+const calculationElement = document.getElementById("calculation");
 
 export class ElementCreator {
     #divisionTypeStyle;
