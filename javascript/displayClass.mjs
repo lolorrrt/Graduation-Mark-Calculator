@@ -29,14 +29,22 @@ export class subjectStructureAppender{
 
     createSubject(){
         let structureList = [];
-        
+        let subjectHeading =  new ElementCreator("fachHeading", "div");
+        let subjHeadingElement = document.createElement(subjectHeading.divisionTypeHtml);
+
         for (let i = 0; i<3;i++){
             let elem = document.createElement(this.#listOfElements[i].divisionTypeHtml);
             elem.className = this.#listOfElements[i].divisionTypeStyle;
             structureList[i] = elem;
         }
+        
+        subjHeadingElement.className = "fachHeading";
+        subjHeadingElement.textContent = `Fach`;
+
+        structureList[1].append(subjHeadingElement);
         structureList[0].append(structureList[1]);
         structureList[0].append(structureList[2]);
+
         return structureList[0];
     }
 
@@ -89,9 +97,16 @@ export class semesterStructureAppender{
         let courseList = this.createSingleSubjectGrid();
         let semester = document.createElement(this.#course.divisionTypeHtml);
         semester.className = this.#course.divisionTypeStyle;
+
+        let courseHeading =  document.createElement("div");
+        courseHeading.className = "courseHeading";
         courseList.forEach((element) =>{
             element = semester.cloneNode();
-            document.getElementsByClassName("grid")[count].append(element);
+            let semesterElement = element;
+            element = courseHeading.cloneNode();
+            semesterElement.append(element);
+            courseHeading.textContent = `test`;
+            document.getElementsByClassName("grid")[count].append(semesterElement);    
         });
     }
 
