@@ -1,0 +1,24 @@
+@import "result-style.css";
+@import "course-style.css";
+
+:root {
+    --text: #262532;
+    --background: #f2f2f4;
+    --primary: #8027ce;
+    --secondary: #ebdbff;
+    --accent: #bb3dff;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    box-sizing: border-box;
+}
+
+#mainHeading {
+    font-size: 40px;
+    font-weight: bolder;
+    color: var(--text);
+    margin: 10px auto;
+    text-align: center;
+    text-decoration: underline solid 8px var(--accent);
+}

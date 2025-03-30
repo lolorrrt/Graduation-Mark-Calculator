@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
     <script type="module" src="javascript/kurs.mjs" defer></script>
     <script type="module" src="javascript/faecher.mjs" defer></script>
     <script type="module" src="javascript/selection.js" defer></script>
@@ -15,13 +15,23 @@
 </head>
 
 <body>
-
+    <!-- For the Future
     <div id="mode-select">mode-select</div>
+    -->
+    <h1 id="mainHeading">Berechne deinen Abischnitt!</h1>
+
     <div id="calculation"></div>
- 
-    <div id="score">score
-        <div id="credits"></div>
-        <div id="mark"></div>
+
+    <div id="resultContainer">
+        <h2 id="resultTitle">Ergebnis</h2>
+        <div id="pointContainer">
+            <div id="pointHeading">Gesamt Punkte</div>
+            <div id="points">500/600 Points</div> <!-- Some dummy values -->
+        </div>
+        <div id="markContainer">
+            <div id="markHeading">Durschnitt Punkte</div>
+            <div id="mark">13,5 Points</div> <!-- Some dummy values -->
+        </div>
     </div>
 
 </body>
