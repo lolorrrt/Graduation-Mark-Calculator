@@ -1,87 +1,142 @@
 import { MoeglicheFaecher, Anforderungsbereiche, FachTyp, Kurs } from "./javascript/kurs.mjs";
-var subj = document.getElementsByClassName("title");
-var courseCredits = document.getElementsByClassName("course");
 
-const calculationElement = document.getElementById("calculation");
-let subjects = createSubjects();
+class Parent{
+    #divisionTypeStyle;
 
-function createSubjects(){
-    let subjects = [];
-    for (let i = 0; i< 12;i++){
-        subjects[i] = document.createElement("div");
-        subjects[i].className = "subject";
-        calculationElement.append(subjects[i]);
+    constructor(divisionTypeStyle){
+        this.#divisionTypeStyle = divisionTypeStyle;
     }
-    return subjects; 
+
+    initalize (){
+        let possibleParentList = document.getElementsByClassName(this.#divisionTypeStyle);
+        return possibleParentList;
+    }
+    
+}
+class ElementCreator {
+    #divisionTypeStyle;
+    #divisionTypeHtml;
+
+    constructor(divisionTypeStyle, divisionTypeHtml) {
+        this.#divisionTypeHtml = divisionTypeHtml;
+        this.#divisionTypeStyle = divisionTypeStyle;
+    }
+
+    get divisionTypeHtml(){
+        return this.#divisionTypeHtml;
+    }
+    get divisionTypeStyle(){
+        return this.#divisionTypeStyle;
+    }
+
 }
 
-function createTitleElements(){
-    let titles = [];
-    for (let i = 0; i< 12;i++){
-        titles[i] = document.createElement("div");
-        titles[i].className = "title";
-        subjects[i].append(titles[i]);
+class subjectStructureAppender{
+    #listOfElements;
+    constructor(listOfElements){
+        this.#listOfElements = listOfElements;
     }
-    return titles; 
-}
 
-function createGridElements(){
-    let grids = [];
-    for (let i = 0; i< 12;i++){
-        grids[i] = document.createElement("div");
-        grids[i].className = "grid";
-        subjects[i].append(grids[i]);
-    }
-    return grids; 
-}
-
-function createCourseElements(){
-    let subjectCourses = [];
-    for (let j = 0; j<12;j++){
-        for (let i = 0; i< 4;i++){
-            subjectCourses[i] = document.createElement("div");
-            subjectCourses[i].className = "course";
-            grids[j].append(subjectCourses[i]);
+    createSubject(){
+        let structureList = [];
+        
+        for (let i = 0; i<3;i++){
+            let elem = document.createElement(this.#listOfElements[i].divisionTypeHtml);
+            elem.className = this.#listOfElements[i].divisionTypeStyle;
+            structureList[i] = elem;
         }
+        structureList[0].append(structureList[1]);
+        structureList[0].append(structureList[2]);
+        return structureList[0];
     }
-    return grids; 
-}
 
-function createSubjectSelection(index) {  
-    const selectElement = document.createElement('select');
-    selectElement.className = "subjectOptions";
-    const allFaecher = Object.values(MoeglicheFaecher);
+    createMaximumStructureList(count){
+        let list = this.createSubject();
+        let wholeSubjectList = [];
 
-    allFaecher.forEach((element) => {
-        let newOption = document.createElement('option');
-        newOption.value = element.name;
-        newOption.textContent = element.name;
-        selectElement.appendChild(newOption);
-    });
-    document.getElementsByClassName("title")[index].appendChild(selectElement);
-}
-function createCourseCreditSelection(index){
-    const options = [];
-    const selectElement = document.createElement('select');
-    selectElement.className = "courseCreditOptions";
-
-    let firstOption = document.createElement('option');
-    firstOption.textContent = "Nicht belegt!";
-    selectElement.appendChild(firstOption);
-
-    for (let i = 0; i<16;i++){
-        options[i] = document.createElement('option');
-        options[i].value = i;
-        options[i].textContent = `${i} Punkte`;
-        selectElement.appendChild(options[i]);
+        for (let index = 0; index < count; index++)
+            wholeSubjectList[index] = list.cloneNode(true);     
+        return wholeSubjectList;
     }
-    document.getElementsByClassName("course")[index].appendChild(selectElement);
+
+    appendAll(){
+        let elementList = this.createMaximumStructureList(12);
+        for (let index = 0; index < 12; index++)
+            calculationElement.appendChild(elementList[index]);          
+    }
+
+    createSubjectSelection() { 
+        const titles = document.getElementsByClassName("title");
+        for (let i = 0; i<12;i++){ 
+        const selectElement = document.createElement('select');
+        selectElement.className = "subjectOptions";
+        const allFaecher = Object.values(MoeglicheFaecher);
+            allFaecher.forEach((element) => {
+                let newOption = document.createElement('option');
+                newOption.value = element.name;
+                newOption.textContent = element.name;
+                selectElement.appendChild(newOption);
+            });
+            document.getElementsByClassName("title")[i].appendChild(selectElement);
+        }
+        
+        }
+        createCourseCreditSelection(index){
+            const options = [];
+            const selectElement = document.createElement('select');
+            selectElement.className = "courseCreditOptions";
+        
+            let firstOption = document.createElement('option');
+            firstOption.textContent = "Nicht belegt!";
+            selectElement.appendChild(firstOption);
+        
+            for (let i = 0; i<16;i++){
+                options[i] = document.createElement('option');
+                options[i].value = i;
+                options[i].textContent = `${i} Punkte`;
+                selectElement.appendChild(options[i]);
+            }
+            document.getElementsByClassName("course")[index].appendChild(selectElement);
+    }
 }
-//createSubjects();
-createTitleElements();
-var grids = createGridElements();
-createCourseElements();
-for (let i = 0; i < subj.length; i++) 
-        createSubjectSelection(i);
-for (let i = 0; i < courseCredits.length; i++)
-    createCourseCreditSelection(i);
+
+const calculationElement = document.getElementsByClassName("calculation")[0];
+let structureList = [new ElementCreator ("subject", "div"), new ElementCreator ("title", "div"), new ElementCreator ("grid", "div")];
+let subjectComponent = new subjectStructureAppender (structureList);
+subjectComponent.appendAll();
+subjectComponent.createSubjectSelection();
+
+class gridAppender{
+    #course;
+    constructor(course){
+        this.#course = course;
+    }
+
+    createSingleSubjectGrid(){
+        let courseList = [];
+        for (let i = 0; i<4;i++)
+            courseList[i] = this.#course;
+        return courseList;
+    } 
+    appendSingle(count){
+        let courseList = this.createSingleSubjectGrid();
+        let semester = document.createElement(this.#course.divisionTypeHtml);
+        semester.className = this.#course.divisionTypeStyle;
+        courseList.forEach((element) =>{
+            element = semester.cloneNode();
+            document.getElementsByClassName("grid")[count].append(element);
+        });
+    }
+
+    appendAll(){
+        for (let i = 0; i< 12;i++)
+            this.appendSingle(i);
+    }
+
+}
+
+let semester = new gridAppender(new ElementCreator ("course", "div"));
+semester.appendAll();
+/*for (let i = 0; i<12;i++){
+    subjectComponent.createSubjectSelection(i);
+}*/
