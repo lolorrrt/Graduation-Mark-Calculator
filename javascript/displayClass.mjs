@@ -27,7 +27,7 @@ export class subjectStructureAppender{
         this.#listOfElements = listOfElements;
     }
 
-    createSubject(){
+    createSubject(index){
         let structureList = [];
         let subjectHeading =  new ElementCreator("fachHeading", "div");
         let subjHeadingElement = document.createElement(subjectHeading.divisionTypeHtml);
@@ -39,7 +39,11 @@ export class subjectStructureAppender{
         }
         
         subjHeadingElement.className = "fachHeading";
-        subjHeadingElement.textContent = `Fach`;
+        if (index < 3)
+            subjHeadingElement.textContent = `LK`;
+        else
+            subjHeadingElement.textContent = `BK`;
+
 
         structureList[1].append(subjHeadingElement);
         structureList[0].append(structureList[1]);
@@ -49,11 +53,10 @@ export class subjectStructureAppender{
     }
 
     createMaximumStructureList(count){
-        let list = this.createSubject();
         let wholeSubjectList = [];
 
         for (let index = 0; index < count; index++)
-            wholeSubjectList[index] = list.cloneNode(true);     
+            wholeSubjectList[index] = this.createSubject(index);     
         return wholeSubjectList;
     }
 
@@ -65,7 +68,7 @@ export class subjectStructureAppender{
 
     createSubjectSelection() { 
         const titles = document.getElementsByClassName("title");
-        for (let i = 0; i<amountSubjects;i++){ 
+        for (let i = 0; i<amountSubjects;i++){
         const selectElement = document.createElement('select');
         selectElement.className = "subjectOptions";
         const allFaecher = Object.values(MoeglicheFaecher);
