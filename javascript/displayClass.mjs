@@ -41,6 +41,8 @@ export class subjectStructureAppender{
         subjHeadingElement.className = "fachHeading";
         if (index < 3)
             subjHeadingElement.textContent = `LK`;
+        else if (index < 5)
+            subjHeadingElement.textContent = `MP`;
         else
             subjHeadingElement.textContent = `BK`;
 
