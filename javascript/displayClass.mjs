@@ -67,19 +67,20 @@ export class subjectStructureAppender{
     }
 
     createSubjectSelection() { 
-        const titles = document.getElementsByClassName("title");
         for (let i = 0; i<amountSubjects;i++){
         const selectElement = document.createElement('select');
         selectElement.className = "subjectOptions";
         const allFaecher = Object.values(MoeglicheFaecher);
             allFaecher.forEach((element) => {
                 let newOption = document.createElement('option');
+                newOption.className = "option";
                 newOption.value = element.name;
                 newOption.textContent = element.name;
                 selectElement.appendChild(newOption);
             });
             document.getElementsByClassName("title")[i].appendChild(selectElement);
         }
+        return true;
         
     }
 }
@@ -137,5 +138,6 @@ export class semesterStructureAppender{
         }
         document.getElementsByClassName("course")[i].appendChild(selectElement);
     }
+    
 }
 }
