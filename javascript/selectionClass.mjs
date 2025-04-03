@@ -1,5 +1,5 @@
-export class selection{
 
+export class subjectList {
     #listSubjects = [];
     constructor(listSubjects){
         this.#listSubjects = listSubjects;
@@ -21,13 +21,18 @@ export class selection{
         return sum;
     }
 
-    removeSubject(subject){
-        return this.#listSubjects.pop(subject);
+    removeLastSubject(){
+        return this.#listSubjects.pop();
     }
 
     updateSubject(index, subject){
         this.#listSubjects[index] = subject;
     }
+
+}
+
+export class selection{
+
 
     checkForError (){
         //check number of courses
@@ -44,6 +49,19 @@ export class selection{
     }
 
     getOptimizedScore(){
+        // Alle LKs zu den bewertenden Kursen hinzufügen
+        // Die zwei besten LKs nocheinmal hinzufügen
+
+        // Alle Kurse der mündlichen Prüfungsfächer hinzufügen
+
+        // Soweit nicht als Leistungsfach oder mündl. Prüfungsfach
+            // 4 Kurse von Deutsch
+            // 4 Kurse von Mathematik
+            // 4 Kurse von der besten Fremdsprache
+            // 4 Kurse von der besten Naturwissenschaft
+            // 4 Kurse von Geschichte
+            // die Kurse von Geografie und GK
+            // 2 Kurse in BK oder Musik
 
     }
 }
