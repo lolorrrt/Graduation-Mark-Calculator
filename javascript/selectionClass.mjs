@@ -29,6 +29,40 @@ export class subjectList {
         this.#listSubjects[index] = subject;
     }
 
+    sortCompareSubjects(a, b) {
+        return b.mittelwertPunkte - a.mittelwertPunkte;
+    }
+
+    get sortedLKs(){
+        let sortedLKs = [];
+        this.#listSubjects.forEach((subject) => {
+            if(subject.isLeistungsfach){
+                sortedLKs.push(subject);
+            }
+        });
+        sortedLKs.sort(sortCompareSubjects());
+        return sortedLKs;
+    }
+
+    get sortedMuendlPruefs(){
+        let sortedMuendlPruefs = [];
+        this.#listSubjects.forEach((subject) => {
+            if(subject.muendlichePruefung){
+                sortedMuendlPruefs.push(subject);
+            }
+        });
+        sortedMuendlPruefs.sort(sortCompareSubjects());
+        return sortedMuendlPruefs;
+    }
+
+    hasName(subject, name){
+        return subject.fachTyp.name == name;
+    }
+
+    getFachByName(name){
+        this.#listSubjects.find((subject) => { this.hasName(subject, name)});
+    }
+
 }
 
 export class selection{
