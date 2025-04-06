@@ -57,6 +57,7 @@ function initalizeDisplay() {
 
     let semester = new semesterStructureAppender(new ElementCreator ("course", "div"));
     semester.appendAll();
+    semester.createCourseCreditSelection();
     return true;
         
 }
@@ -83,5 +84,5 @@ myPromise
             }, 3000);
         });
     })
-    .then(function() {window.alert(checkForSelection(courseElements[0]+ "test2"));})
+    .then(function() {window.alert(checkForSelection(courseElements[0]));})
     .then(function() {window.alert(createSubjectList())});
