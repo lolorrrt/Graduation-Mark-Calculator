@@ -41,6 +41,8 @@ export class subjectStructureAppender{
         subjHeadingElement.className = "fachHeading";
         if (index < 3)
             subjHeadingElement.textContent = `LK`;
+        else if (index < 5)
+            subjHeadingElement.textContent = `MP`;
         else
             subjHeadingElement.textContent = `BK`;
 
@@ -80,7 +82,6 @@ export class subjectStructureAppender{
             });
             document.getElementsByClassName("title")[i].appendChild(selectElement);
         }
-        return true;
         
     }
 }
@@ -139,5 +140,5 @@ export class semesterStructureAppender{
         document.getElementsByClassName("course")[i].appendChild(selectElement);
     }
     
-}
+    }
 }

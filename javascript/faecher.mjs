@@ -8,7 +8,7 @@ export class Fach {
 
     constructor(fachTyp, isLeistungsfach, muendlichePruefung, halbjahre){
         this.#fachTyp = fachTyp;
-        this.#isLeistungsfach = leistungsfach;
+        this.#isLeistungsfach = isLeistungsfach;
         this.#muendlichePruefung = muendlichePruefung;
         this.#halbjahre = halbjahre;
     }
@@ -22,7 +22,7 @@ export class Fach {
     }
 
     get anzahlKurse(){
-        return this.halbjahre.length;
+        return this.#halbjahre.length;
     }
 
     get gesamtPunktzahl(){

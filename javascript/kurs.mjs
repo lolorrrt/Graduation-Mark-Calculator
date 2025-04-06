@@ -58,7 +58,7 @@ export const Anforderungsbereiche = {
 }
 
 export const MoeglicheFaecher = {
-    Waehle: new FachTyp("---- Wähle weise ----", NaN, NaN),
+    Waehle: new FachTyp("Waehle", NaN, NaN),
     Deutsch: new FachTyp("Deutsch", 4, Anforderungsbereiche.I),
     Englisch: new FachTyp("Englisch", 0, Anforderungsbereiche.I),
     Franzoesisch: new FachTyp("Franzoesisch", 0, Anforderungsbereiche.I),
@@ -85,4 +85,5 @@ export const MoeglicheFaecher = {
     Geologie: new FachTyp("Geologie", 4, Anforderungsbereiche.Nichts),
     Literatur: new FachTyp("Literatur", 4, Anforderungsbereiche.Nichts)
 }
+
 
