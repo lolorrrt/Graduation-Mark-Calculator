@@ -6,28 +6,12 @@ import { Fach } from "./faecher.mjs";
 let titleElements = document.getElementsByClassName("subjectOptions");
 let courseElements = document.getElementsByClassName("courseCreditOptions");
 
-/*function courseList(){
+function courseList(subjectList){
     let courseObjects = [];
-    courseElements.forEach(element, index => {
-        let note = "checkForSelection(element)"
-        window.alert(note.substring(1,5))
-        let isBelegt;
-        let isUnterkurs = false;
-        if (note == "Ni"){
-            isBelegt = false;
-            note = 0;
-        }
-        else
-            isBelegt = true;
-    
-        if (note<5){
-            isUnterkurs = true;
-        }
-        courseObjects[index] = new Kurs (note, isUnterkurs, isBelegt);
-    
-    });
-    return courseObjects;
-}*/
+    for (let index = 0; index<courseElements.length; index++){
+
+    }
+}
 function createSubjectList(){
     let subjectObjects = [];
     const allFaecher = Object.values(MoeglicheFaecher);
@@ -79,10 +63,10 @@ myPromise
     .then(function() {
         return new Promise(resolve => {
             setTimeout(function() {
-                window.alert("test 1");
+                //window.alert("test 1");
                 resolve();
             }, 3000);
         });
     })
-    .then(function() {window.alert(checkForSelection(courseElements[0]));})
-    .then(function() {window.alert(createSubjectList())});
+    //.then(function() {window.alert(checkForSelection(courseElements[0]));})
+    //.then(function() {window.alert(createSubjectList())});
