@@ -6,11 +6,22 @@ import { Fach } from "./faecher.mjs";
 let titleElements = document.getElementsByClassName("subjectOptions");
 let courseElements = document.getElementsByClassName("courseCreditOptions");
 
-function courseList(subjectList){
+function courseList(){
     let courseObjects = [];
     for (let index = 0; index<courseElements.length; index++){
+        let creditsSelected = checkForSelection(courseElements[index]);
+        let isBelegt = true;
+        let isUnterkurs = true;
+        
+        if(creditsSelected<2)
+            isBelegt = false;
+        else if (creditsSelected>5)
+            isUnterkurs = false;
+        
+        courseObjects[index] = new Kurs (creditsSelected-1, isUnterkurs, isBelegt);
 
     }
+    return courseObjects;
 }
 function createSubjectList(){
     let subjectObjects = [];
@@ -65,8 +76,8 @@ myPromise
             setTimeout(function() {
                 //window.alert("test 1");
                 resolve();
-            }, 3000);
+            }, 5000);
         });
     })
-    //.then(function() {window.alert(checkForSelection(courseElements[0]));})
-    //.then(function() {window.alert(createSubjectList())});
+    //.then(function() {window.alert(checkForSelection(courseElements[0])+ " test2");})
+    //.then(function() {window.alert(courseList(createSubjectList()))});
