@@ -44,6 +44,16 @@ export class subjectList {
         return sortedLKs;
     }
 
+    get bestLKs(){
+        let LKs = this.sortedLKs;
+        let points = [];
+        LKs.forEach(element, index =>{
+            points[index] = element.gesamtPunktzahl;
+        })
+        LKs.splice(points.indexOf(points.find(Math.min.apply(null, points))),1);
+        return LKs;        
+    }
+
     get sortedMuendlPruefs(){
         let sortedMuendlPruefs = [];
         this.#listSubjects.forEach((subject) => {
@@ -102,10 +112,18 @@ export class selection{
     }
 
     getOptimizedScore(){
+        let coursesForScoring = [];
         // Alle LKs zu den bewertenden Kursen hinzufügen
+        coursesForScoring.push(this.#subjects.sortedLKs);
         // Die zwei besten LKs nocheinmal hinzufügen
-
+        coursesForScoring.push(this.#subjects.bestLKs);
         // Alle Kurse der mündlichen Prüfungsfächer hinzufügen
+        coursesForScoring.push(this.#subjects.sortedMuendlPruefs);
+        
+
+        
+
+        
 
         // Soweit nicht als Leistungsfach oder mündl. Prüfungsfach
             // 4 Kurse von Deutsch
