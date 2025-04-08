@@ -1,4 +1,4 @@
-import {selection} from "./selectionClass.mjs";
+import {selection, subjectList} from "./selectionClass.mjs";
 import {ElementCreator, subjectStructureAppender, semesterStructureAppender} from "./displayClass.mjs";
 import { Kurs, MoeglicheFaecher} from "./kurs.mjs";
 import { Fach } from "./faecher.mjs";
@@ -6,7 +6,20 @@ import { Fach } from "./faecher.mjs";
 let titleElements = document.getElementsByClassName("subjectOptions");
 let courseElements = document.getElementsByClassName("courseCreditOptions");
 
-function courseList(){
+function initalizeDisplay() {
+    let structureList = [new ElementCreator ("subject", "div"), new ElementCreator ("title", "div"), new ElementCreator ("grid", "div")];
+    let subjectComponent = new subjectStructureAppender (structureList);
+
+    subjectComponent.appendAll();
+    subjectComponent.createSubjectSelection();
+
+    let semester = new semesterStructureAppender(new ElementCreator ("course", "div"));
+    semester.appendAll();
+    semester.createCourseCreditSelection();
+    return true;    
+}
+
+async function courseList(){
     let courseObjects = [];
     for (let index = 0; index<courseElements.length; index++){
         let creditsSelected = checkForSelection(courseElements[index]);
@@ -23,7 +36,9 @@ function courseList(){
     }
     return courseObjects;
 }
-function createSubjectList(){
+
+async function createSubjectList(){
+    const courseObjects = await courseList();
     let subjectObjects = [];
     const allFaecher = Object.values(MoeglicheFaecher);
 
@@ -36,25 +51,12 @@ function createSubjectList(){
             isLeistungsfach = true;
         else if (index <5)
             isMuendlich = true;
-
-        subjectObjects[index] = new Fach(FachTyp, isLeistungsfach, isMuendlich, NaN);
+        let semester = [courseObjects[4*index],courseObjects[4*index+1], courseObjects[4*index+2],courseObjects[4*index+3]];
+        subjectObjects[index] = new Fach(FachTyp, isLeistungsfach, isMuendlich, semester);
     }
-    return subjectObjects;
-}
 
-
-function initalizeDisplay() {
-    let structureList = [new ElementCreator ("subject", "div"), new ElementCreator ("title", "div"), new ElementCreator ("grid", "div")];
-    let subjectComponent = new subjectStructureAppender (structureList);
-
-    subjectComponent.appendAll();
-    subjectComponent.createSubjectSelection();
-
-    let semester = new semesterStructureAppender(new ElementCreator ("course", "div"));
-    semester.appendAll();
-    semester.createCourseCreditSelection();
-    return true;
-        
+    let subjects = new subjectList (subjectObjects);
+    return subjects;
 }
 
 function checkForSelection(selectElement) {
