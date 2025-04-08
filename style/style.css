@@ -22,3 +22,38 @@ body {
     text-align: center;
     text-decoration: underline solid 8px var(--accent);
 }
+
+#buttonContainer {
+    background-color: var(--background);
+    border-radius: 10px;
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+    padding: 8px;
+}
+
+#calcButton {
+    font-size: 20px;
+    background-color: var(--text);
+    color: var(--background);
+    padding: 12px;
+    border: 0px;
+    border-radius: 8px;
+}
+
+#calcButton:hover {
+    transform: scale(1.01);
+    box-shadow: 0 6px 4px darkgray;
+}
+
+#calcButton:active {
+    transform: scale(1.03);
+    background-color: var(--accent);
+    transition: all 0.01s ease-in;
+}
+
+#calcButton:active::after {
+    transform: scale(1.00);
+    background-color: var(--text);
+    transition: all 0.01s ease-out;
+}

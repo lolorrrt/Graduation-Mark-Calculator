@@ -63,10 +63,23 @@ export class subjectList {
         this.#listSubjects.find((subject) => { this.hasName(subject, name)});
     }
 
+    getFachNotLKOrMdl(name){
+        let result = this.getFachByName(name);
+        if(result.isLeistungsfach || result.muendlichePruefung) {
+            return false;
+        }
+        return result;
+    }
 }
 
 export class selection{
 
+    #subjects;
+    #scoreCourseList = [];
+
+    constructor(listSubjects){
+        this.#subjects = listSubjects;
+    }
 
     checkForError (){
         //check number of courses
@@ -77,6 +90,15 @@ export class selection{
 
     printError(error){
         document.getElementById("score").innerHTML = `wrong selection of courses, error: ${error}`;
+    }
+
+    addFachNotLKOrMdlToScoreList(name){
+        let fachToAdd = this.#subjects.getFachNotLKOrMdl(name);
+        if(fachToAdd != false) {
+            for(let kurs in fachToAdd.belegteKurse){
+                this.#scoreCourseList.push(kurs);
+            }
+        }
     }
 
     getOptimizedScore(){
