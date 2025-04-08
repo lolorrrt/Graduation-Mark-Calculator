@@ -115,6 +115,6 @@ export class selection{
             // 4 Kurse von Geschichte
             // die Kurse von Geografie und GK
             // 2 Kurse in BK oder Musik
-
+            return Math.random();
     }
 }

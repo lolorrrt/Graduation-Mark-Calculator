@@ -3,6 +3,8 @@ import {ElementCreator, subjectStructureAppender, semesterStructureAppender} fro
 import { Kurs, MoeglicheFaecher} from "./kurs.mjs";
 import { Fach } from "./faecher.mjs";
 
+let button = document.getElementById("calcButton");
+
 let titleElements = document.getElementsByClassName("subjectOptions");
 let courseElements = document.getElementsByClassName("courseCreditOptions");
 
@@ -16,7 +18,17 @@ function initalizeDisplay() {
     let semester = new semesterStructureAppender(new ElementCreator ("course", "div"));
     semester.appendAll();
     semester.createCourseCreditSelection();
+
+    button.addEventListener("click", function(){calculateOptimizedScore(); displayOptimizedScore();});
     return true;    
+}
+
+function checkForSelection(selectElement) {
+    let listOfOptions = selectElement.childNodes;
+    for (let i = 0; i < listOfOptions.length; i++) {
+        if (selectElement.childNodes[i].selected)
+            return i;
+    }
 }
 
 async function courseList(){
@@ -59,27 +71,20 @@ async function createSubjectList(){
     return subjects;
 }
 
-function checkForSelection(selectElement) {
-    let listOfOptions = selectElement.childNodes;
-    for (let i = 0; i < listOfOptions.length; i++) {
-        if (selectElement.childNodes[i].selected)
-            return i;
-    }
+async function calculateOptimizedScore(){
+    const scoreCourseList = await courseList();
+    const subjects = await createSubjectList();
+    let selectionObject = new selection (subjects);
+
+    return selectionObject.getOptimizedScore();
 }
 
-let myPromise = new Promise(function(myResolve, myReject) {
+async function displayOptimizedScore() {
+    const score = await calculateOptimizedScore();
+    document.getElementById("points").innerHTML = `${score}/600`;
+}
+
+let initDisplayResult = new Promise(function(myResolve, myReject) {
     myResolve(initalizeDisplay());
     myReject(0);
 });
-
-myPromise
-    .then(function() {
-        return new Promise(resolve => {
-            setTimeout(function() {
-                //window.alert("test 1");
-                resolve();
-            }, 5000);
-        });
-    })
-    //.then(function() {window.alert(checkForSelection(courseElements[0])+ " test2");})
-    //.then(function() {window.alert(courseList(createSubjectList()))});
