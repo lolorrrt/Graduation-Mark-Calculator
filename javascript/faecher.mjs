@@ -26,20 +26,35 @@ export class Fach {
     }
 
     get gesamtPunktzahl(){
-        return this.#halbjahre.reduce((accumulator, currentValue) => accumulator + currentValue.note);
+        return this.#halbjahre.reduce((accumulator, currentValue) => {
+            if(currentValue.isBelegt) {
+                return accumulator + currentValue.note;
+            }
+            return accumulator;
+        }, 0);
     }
 
     get mittelwertPunkte(){
-        return this.gesamtPunktzahl()/this.isBelegt();
+        return this.gesamtPunktzahl/this.belegteKurseAmount;
     }
 
-    get belegteKurse(){
+    get belegteKurseAmount(){
         return this.#halbjahre.reduce((accumulator, currentValue) => {
-            if(currentValue.isBelegt()){
+            if(currentValue.isBelegt){
                 return accumulator + 1;
             }
                 return accumulator;
             }, 0);
+    }
+
+    get belegteKurseList(){
+        let result = [];
+        for(let i = 0; i < this.#halbjahre.length; i++){
+            if(this.#halbjahre[i].isBelegt){
+                result.push(this.#halbjahre[i]);
+            }
+        }
+        return result;
     }
 
     get fachTyp(){

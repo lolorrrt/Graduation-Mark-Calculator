@@ -29,10 +29,6 @@ export class subjectList {
         this.#listSubjects[index] = subject;
     }
 
-    sortCompareSubjects(a, b) {
-        return b.mittelwertPunkte - a.mittelwertPunkte;
-    }
-
     get sortedLKs(){
         let sortedLKs = [];
         this.#listSubjects.forEach((subject) => {
@@ -40,7 +36,9 @@ export class subjectList {
                 sortedLKs.push(subject);
             }
         });
-        sortedLKs.sort(sortCompareSubjects());
+        sortedLKs.sort(function (a, b) {
+            return b.mittelwertPunkte - a.mittelwertPunkte;
+        });
         return sortedLKs;
     }
 
@@ -61,7 +59,9 @@ export class subjectList {
                 sortedMuendlPruefs.push(subject);
             }
         });
-        sortedMuendlPruefs.sort(sortCompareSubjects());
+        sortedMuendlPruefs.sort(function (a, b) {
+            return b.mittelwertPunkte - a.mittelwertPunkte;
+        });
         return sortedMuendlPruefs;
     }
 
@@ -111,12 +111,33 @@ export class selection{
         }
     }
 
+    addCoursesOfSubjectToList(subject){
+        let belegtCourseList = subject.belegteKurseList;
+        for(let i = 0; i < belegtCourseList.length; i++){
+            this.#scoreCourseList.push(belegtCourseList[i]);
+        }
+    }
+
+    getPointSum(){
+        return this.#scoreCourseList.reduce((accumulator, course) => {
+            return accumulator + course.note;
+            }, 0);
+    }
+
+    calcScore(){
+        return this.getPointSum()/this.#scoreCourseList.length;
+    }
+
     getOptimizedScore(){
         let coursesForScoring = [];
         // Alle LKs zu den bewertenden Kursen hinzufügen
-        coursesForScoring.push(this.#subjects.sortedLKs);
+        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[0]);
+        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1]);
+        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[2]);
         // Die zwei besten LKs nocheinmal hinzufügen
-        coursesForScoring.push(this.#subjects.bestLKs);
+        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[0]);
+        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1]);
+
         // Alle Kurse der mündlichen Prüfungsfächer hinzufügen
         coursesForScoring.push(this.#subjects.sortedMuendlPruefs);
         
@@ -133,6 +154,8 @@ export class selection{
             // 4 Kurse von Geschichte
             // die Kurse von Geografie und GK
             // 2 Kurse in BK oder Musik
-            return Math.random();
+
+        // Auffüllen mit den besten Kursen der nicht hinzugefügten Fächern bis 40 Kurse
+            return this.calcScore();
     }
 }
