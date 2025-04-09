@@ -139,11 +139,8 @@ export class selection{
         this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1]);
 
         // Alle Kurse der mündlichen Prüfungsfächer hinzufügen
-        coursesForScoring.push(this.#subjects.sortedMuendlPruefs);
-        
-
-        
-
+        this.addCoursesOfSubjectToList(this.#subjects.sortedMuendlPruefs[0]);
+        this.addCoursesOfSubjectToList(this.#subjects.sortedMuendlPruefs[1]);
         
 
         // Soweit nicht als Leistungsfach oder mündl. Prüfungsfach
