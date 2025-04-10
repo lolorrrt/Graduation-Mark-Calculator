@@ -75,7 +75,7 @@ async function calculateOptimizedScore(){
     const subjects = await createSubjectList();
     let selectionObject = new selection (subjects);
 
-    return selectionObject.getOptimizedAverage();
+    return selectionObject.getOptimizedScore();
 }
 
 async function calculateOptimizedAverage(){
