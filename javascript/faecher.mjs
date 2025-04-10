@@ -13,6 +13,14 @@ export class Fach {
         this.#halbjahre = halbjahre;
     }
     
+    get fachTyp(){
+        return this.#fachTyp;
+    }
+
+    get name(){
+        return this.#fachTyp.name;
+    }
+
     get isLeistungsfach() {
         return this.#isLeistungsfach;
     }
@@ -65,5 +73,7 @@ export class Fach {
         return this.#halbjahre[index];
     }
 
-
+    removeCourse(index){
+        this.#halbjahre.splice(index);
+    }
 }

@@ -73,7 +73,13 @@ export class subjectList {
     }
 
     getFachByName(name){
-        this.#listSubjects.find((subject) => { this.hasName(subject, name)});
+        return this.#listSubjects.find((subject) => { return this.hasName(subject, name)});
+    }
+
+    getFachIndexByName(name){
+        let index = this.#listSubjects.findIndex((subject) => { return this.hasName(subject, name)});
+        console.log(index);
+        console.log(name);
     }
 
     getFaecherListByType(type){
@@ -93,15 +99,21 @@ export class subjectList {
         }
         return result;
     }
+
+    removeCourseOfFach(name, courseIndex){
+        this.#listSubjects[this.getFachIndexByName(name)] = this.#listSubjects[this.getFachIndexByName(name)].removeCourse(courseIndex);
+    }
 }
 
 export class selection{
 
     #subjects;
     #scoreCourseList = [];
+    #availableFaecherForScoring;
 
     constructor(listSubjects){
         this.#subjects = listSubjects;
+        this.#availableFaecherForScoring = listSubjects;
     }
 
     checkForError (){
@@ -121,6 +133,7 @@ export class selection{
             coursesOfFachToAdd = fachToAdd.belegtCourseList.sort(function (a, b) {b.note - a.note});
             for(let i = 0; i<coursesOfFachToAdd.length && i<courseAmount; i++){
                 this.#scoreCourseList.push(kurs);
+                this.#availableFaecherForScoring.removeCourseOfFach(fachToAdd.name, i);
             }
         }
     }
@@ -129,6 +142,7 @@ export class selection{
         let belegtCourseList = subject.belegteKurseList;
         for(let i = 0; i < belegtCourseList.length; i++){
             this.#scoreCourseList.push(belegtCourseList[i]);
+            this.#availableFaecherForScoring.removeCourseOfFach(subject.name, i);
         }
     }
 
@@ -138,6 +152,7 @@ export class selection{
         let sortedCourses = subject.belegtCourseList.sort(function (a, b) { return b.note - a.note});
         for(let i = 0; i<sortedCourses.length && i<amountToAdd; i++){
             this.#scoreCourseList.push(sortedCourses[i]);
+            this.#availableFaecherForScoring.removeCourseOfFach(subject.name, i);
         }
     }
 
@@ -151,7 +166,12 @@ export class selection{
         return this.getPointSum()/this.#scoreCourseList.length;
     }
 
+    fillTo40Courses(){
+
+    }
+
     getOptimizedAverage(){
+        let coursesForScoring = [];
         // Alle LKs zu den bewertenden Kursen hinzufügen
         this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[0]);
         this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1]);
@@ -166,21 +186,20 @@ export class selection{
         
 
         // Soweit nicht als Leistungsfach oder mündl. Prüfungsfach
-            // 4 Kurse von der besten Fremdsprache
-            this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Fremdsprache)[0]);
-            // 4 Kurse von der besten Naturwissenschaft
-            this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Naturwissenschaft)[0]);
-            // 4 Kurse von Geschichte
-            this.addFachNotLKOrMdlToScoreList("Geschichte", 4);
+        // 4 Kurse von der besten Fremdsprache
+        this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Fremdsprache)[0]);
+        // 4 Kurse von der besten Naturwissenschaft
+        this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Naturwissenschaft)[0]);
+        // 4 Kurse von Geschichte
+        this.addFachNotLKOrMdlToScoreList("Geschichte", 4);
+        // die Kurse von Geografie und GK
+        this.addFachNotLKOrMdlToScoreList("Geografie", 4);
+        this.addFachNotLKOrMdlToScoreList("Gemeinschaftskunde", 4);
+        // 2 Kurse in BK oder Musik
+        this.addBestCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Kuenstlerisch)[0], 2);
 
-            // die Kurse von Geografie und GK
-            this.addFachNotLKOrMdlToScoreList("Geografie", 4);
-            this.addFachNotLKOrMdlToScoreList("Gemeinschaftskunde", 4);
-
-            // 2 Kurse in BK oder Musik
-            this.addBestCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Kuenstlerisch)[0], 2);
-
-        // Auffüllen mit den besten Kursen der nicht hinzugefügten Fächern bis 40 Kurse
-            return this.calcScore();
+        this.fillTo40Courses();
+        
+        return this.calcScore();
     }
 }
