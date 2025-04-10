@@ -102,10 +102,11 @@ export class selection{
         document.getElementById("score").innerHTML = `wrong selection of courses, error: ${error}`;
     }
 
-    addFachNotLKOrMdlToScoreList(name){
+    addFachNotLKOrMdlToScoreList(name, courseAmount){
         let fachToAdd = this.#subjects.getFachNotLKOrMdl(name);
         if(fachToAdd != false) {
-            for(let kurs in fachToAdd.belegteKurse){
+            coursesOfFachToAdd = fachToAdd.belegtCourseList.sort(function (a, b) {b.note - a.note});
+            for(let i = 0; i<coursesOfFachToAdd.length && i<courseAmount; i++){
                 this.#scoreCourseList.push(kurs);
             }
         }
@@ -145,11 +146,18 @@ export class selection{
 
         // Soweit nicht als Leistungsfach oder mündl. Prüfungsfach
             // 4 Kurse von Deutsch
+            this.addFachNotLKOrMdlToScoreList("Deutsch", 4);
             // 4 Kurse von Mathematik
+            this.addFachNotLKOrMdlToScoreList("Mathematik", 4);
             // 4 Kurse von der besten Fremdsprache
             // 4 Kurse von der besten Naturwissenschaft
             // 4 Kurse von Geschichte
+            this.addFachNotLKOrMdlToScoreList("Geschichte", 4);
+
             // die Kurse von Geografie und GK
+            this.addFachNotLKOrMdlToScoreList("Geografie", 4);
+            this.addFachNotLKOrMdlToScoreList("Gemeinschaftskunde", 4);
+
             // 2 Kurse in BK oder Musik
 
         // Auffüllen mit den besten Kursen der nicht hinzugefügten Fächern bis 40 Kurse
