@@ -151,8 +151,7 @@ export class selection{
         return this.getPointSum()/this.#scoreCourseList.length;
     }
 
-    getOptimizedScore(){
-        let coursesForScoring = [];
+    getOptimizedAverage(){
         // Alle LKs zu den bewertenden Kursen hinzufügen
         this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[0]);
         this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1]);

@@ -19,7 +19,7 @@ function initalizeDisplay() {
     semester.appendAll();
     semester.createCourseCreditSelection();
 
-    button.addEventListener("click", function(){calculateOptimizedScore(); displayOptimizedScore();});
+    button.addEventListener("click", function(){calculateOptimizedAverage(); displayOptimizedAverage();});
     return true;    
 }
 
@@ -71,17 +71,17 @@ async function createSubjectList(){
     return subjects;
 }
 
-async function calculateOptimizedScore(){
+async function calculateOptimizedAverage(){
     const scoreCourseList = await courseList();
     const subjects = await createSubjectList();
     let selectionObject = new selection (subjects);
 
-    return selectionObject.getOptimizedScore();
+    return selectionObject.getOptimizedAverage();
 }
 
-async function displayOptimizedScore() {
-    const score = await calculateOptimizedScore();
-    document.getElementById("points").innerHTML = `${score}/600`;
+async function displayOptimizedAverage() {
+    const score = await calculateOptimizedAverage();
+    document.getElementById("mark").innerHTML = `${score}/600`;
 }
 
 let initDisplayResult = new Promise(function(myResolve, myReject) {
