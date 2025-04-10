@@ -86,7 +86,9 @@ export class subjectList {
 
     getFachNotLKOrMdl(name){
         let result = this.getFachByName(name);
-        if(result.isLeistungsfach || result.muendlichePruefung) {
+        if(typeof result != "object"){
+            return false;
+        }else if(result.isLeistungsfach || result.muendlichePruefung) {
             return false;
         }
         return result;
@@ -131,6 +133,8 @@ export class selection{
     }
 
     addBestCoursesOfSubjectToList(subject, amountToAdd){
+        if(subject.belegtCourseList == undefined)
+            return;
         let sortedCourses = subject.belegtCourseList.sort(function (a, b) { return b.note - a.note});
         for(let i = 0; i<sortedCourses.length && i<amountToAdd; i++){
             this.#scoreCourseList.push(sortedCourses[i]);
@@ -168,9 +172,9 @@ export class selection{
             // 4 Kurse von Mathematik
             this.addFachNotLKOrMdlToScoreList("Mathematik", 4);
             // 4 Kurse von der besten Fremdsprache
-            this.addCoursesOfSubjectToList(getFaecherListByTypeNotLKOrMdlSorted(Types.Fremdsprache)[0]);
+            this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Fremdsprache)[0]);
             // 4 Kurse von der besten Naturwissenschaft
-            this.addCoursesOfSubjectToList(getFaecherListByTypeNotLKOrMdlSorted(Types.Naturwissenschaft)[0]);
+            this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Naturwissenschaft)[0]);
             // 4 Kurse von Geschichte
             this.addFachNotLKOrMdlToScoreList("Geschichte", 4);
 
@@ -179,7 +183,7 @@ export class selection{
             this.addFachNotLKOrMdlToScoreList("Gemeinschaftskunde", 4);
 
             // 2 Kurse in BK oder Musik
-            this.addBestCoursesOfSubjectToList(getFaecherListByTypeNotLKOrMdlSorted(Types.Kuenstlerisch)[0], 2);
+            this.addBestCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Kuenstlerisch)[0], 2);
 
         // Auffüllen mit den besten Kursen der nicht hinzugefügten Fächern bis 40 Kurse
             return this.calcScore();
