@@ -167,10 +167,6 @@ export class selection{
         
 
         // Soweit nicht als Leistungsfach oder mündl. Prüfungsfach
-            // 4 Kurse von Deutsch
-            this.addFachNotLKOrMdlToScoreList("Deutsch", 4);
-            // 4 Kurse von Mathematik
-            this.addFachNotLKOrMdlToScoreList("Mathematik", 4);
             // 4 Kurse von der besten Fremdsprache
             this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Fremdsprache)[0]);
             // 4 Kurse von der besten Naturwissenschaft
