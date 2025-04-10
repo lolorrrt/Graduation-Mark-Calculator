@@ -1,3 +1,4 @@
+import { Types } from "./kurs.mjs";
 
 export class subjectList {
     #listSubjects = [];
@@ -36,9 +37,7 @@ export class subjectList {
                 sortedLKs.push(subject);
             }
         });
-        sortedLKs.sort(function (a, b) {
-            return b.mittelwertPunkte - a.mittelwertPunkte;
-        });
+        sortedLKs = this.sortListByMittelwertPunkte(sortedLKs);
         return sortedLKs;
     }
 
@@ -59,10 +58,14 @@ export class subjectList {
                 sortedMuendlPruefs.push(subject);
             }
         });
-        sortedMuendlPruefs.sort(function (a, b) {
+        sortedMuendlPruefs = this.sortListByMittelwertPunkte(sortedMuendlPruefs);
+        return sortedMuendlPruefs;
+    }
+
+    sortListByMittelwertPunkte(list){
+        return list.sort(function (a, b) {
             return b.mittelwertPunkte - a.mittelwertPunkte;
         });
-        return sortedMuendlPruefs;
     }
 
     hasName(subject, name){
@@ -71,6 +74,14 @@ export class subjectList {
 
     getFachByName(name){
         this.#listSubjects.find((subject) => { this.hasName(subject, name)});
+    }
+
+    getFaecherListByType(type){
+        return this.#listSubjects.filter((fach) => fach.type = type);
+    }
+
+    getFaecherListByTypeNotLKOrMdlSorted(type){
+        return this.sortListByMittelwertPunkte(this.getFaecherListByType(type).filter((fach) => !fach.isLeistungsfach && !fach.muendlichePruefung));
     }
 
     getFachNotLKOrMdl(name){
@@ -119,6 +130,13 @@ export class selection{
         }
     }
 
+    addBestCoursesOfSubjectToList(subject, amountToAdd){
+        let sortedCourses = subject.belegtCourseList.sort(function (a, b) { return b.note - a.note});
+        for(let i = 0; i<sortedCourses.length && i<amountToAdd; i++){
+            this.#scoreCourseList.push(sortedCourses[i]);
+        }
+    }
+
     getPointSum(){
         return this.#scoreCourseList.reduce((accumulator, course) => {
             return accumulator + course.note;
@@ -150,7 +168,9 @@ export class selection{
             // 4 Kurse von Mathematik
             this.addFachNotLKOrMdlToScoreList("Mathematik", 4);
             // 4 Kurse von der besten Fremdsprache
+            this.addCoursesOfSubjectToList(getFaecherListByTypeNotLKOrMdlSorted(Types.Fremdsprache)[0]);
             // 4 Kurse von der besten Naturwissenschaft
+            this.addCoursesOfSubjectToList(getFaecherListByTypeNotLKOrMdlSorted(Types.Naturwissenschaft)[0]);
             // 4 Kurse von Geschichte
             this.addFachNotLKOrMdlToScoreList("Geschichte", 4);
 
@@ -159,6 +179,7 @@ export class selection{
             this.addFachNotLKOrMdlToScoreList("Gemeinschaftskunde", 4);
 
             // 2 Kurse in BK oder Musik
+            this.addBestCoursesOfSubjectToList(getFaecherListByTypeNotLKOrMdlSorted(Types.Kuenstlerisch)[0], 2);
 
         // Auffüllen mit den besten Kursen der nicht hinzugefügten Fächern bis 40 Kurse
             return this.calcScore();
