@@ -73,7 +73,7 @@ export class subjectList {
     }
 
     getFaecherListByType(type){
-        return this.#listSubjects.filter((fach) => fach.type = type);
+        return this.#listSubjects.filter((fach) => fach.fachTyp.type == type);
     }
 
     getFaecherListByTypeNotLKOrMdlSorted(type){
@@ -130,24 +130,38 @@ export class selection{
         document.getElementById("score").innerHTML = `wrong selection of courses, error: ${error}`;
     }
 
+    LKOrMdlHasType(type){
+        let result = false;
+        this.#subjects.sortedLKs.forEach((subject) => {
+            if(subject.fachTyp.type == type){
+                result = true;
+            }
+        });
+
+        this.#subjects.sortedMuendlPruefs.forEach((subject) => {
+            if(subject.fachTyp.type == type){
+                result = true;
+            }
+        });
+        return result;
+    }
+
     addFachNotLKOrMdlToScoreList(name, courseAmount){
         let fachToAdd = this.#subjects.getFachNotLKOrMdl(name);
         if(fachToAdd != false) {
             let coursesOfFachToAdd = fachToAdd.belegteKurseList.sort(function (a, b) {b.note - a.note});
             for(let i = 0; i<coursesOfFachToAdd.length && i<courseAmount; i++){
-                this.#scoreCourseList.push(kurs);
+                this.#scoreCourseList.push(coursesOfFachToAdd[i]);
                 this.#availableFaecherForScoring.removeCourseOfFach(fachToAdd.name, i);
             }
         }
     }
 
-    addCoursesOfSubjectToList(subject, removeCourses = true){
+    addCoursesOfSubjectToList(subject){
         let belegtCourseList = subject.belegteKurseList;
         for(let i = 0; i < belegtCourseList.length; i++){
             this.#scoreCourseList.push(belegtCourseList[i]);
-            if (removeCourses) {
-                this.#availableFaecherForScoring.removeCourseOfFach(subject.name, i);
-            }
+            this.#availableFaecherForScoring.removeCourseOfFach(subject.name, i);
         }
     }
 
@@ -175,15 +189,15 @@ export class selection{
         return this.getPointSum()/this.#scoreCourseList.length;
     }
 
-    fillTo40Courses(){
+    fillTo48Courses(){
         // Get all belgete kurse
         let allLeftCourses = this.#availableFaecherForScoring.listSubjects.map(subject => subject.belegteKurseList).flat();
 
         // Sort the courses by their note
         allLeftCourses.sort((a, b) => b.note - a.note);
 
-        // Add courses to the score list until it reaches 40
-        for (let i = 0; i < allLeftCourses.length && this.#scoreCourseList.length < 40; i++) {
+        // Add courses to the score list until it reaches 48
+        for (let i = 0; i < allLeftCourses.length && this.#scoreCourseList.length < 48; i++) {
             this.#scoreCourseList.push(allLeftCourses[i]);
         }
     }
@@ -194,8 +208,8 @@ export class selection{
         this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1]);
         this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[2]);
         // Die zwei besten LKs nocheinmal hinzufügen
-        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[0], false);
-        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1], false);
+        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[0]);
+        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1]);
 
         // Alle Kurse der mündlichen Prüfungsfächer hinzufügen
         this.addCoursesOfSubjectToList(this.#subjects.sortedMuendlPruefs[0]);
@@ -204,9 +218,11 @@ export class selection{
 
         // Soweit nicht als Leistungsfach oder mündl. Prüfungsfach
         // 4 Kurse von der besten Fremdsprache
-        this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Fremdsprache)[0]);
+        if (!this.LKOrMdlHasType(Types.Fremdsprache))
+            this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Fremdsprache)[0]);
         // 4 Kurse von der besten Naturwissenschaft
-        this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Naturwissenschaft)[0]);
+        if (!this.LKOrMdlHasType(Types.Naturwissenschaft))
+            this.addCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Naturwissenschaft)[0]);
         // 4 Kurse von Geschichte
         this.addFachNotLKOrMdlToScoreList("Geschichte", 4);
         // die Kurse von Geografie und GK
@@ -215,7 +231,7 @@ export class selection{
         // 2 Kurse in BK oder Musik
         this.addBestCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Kuenstlerisch)[0], 2);
 
-        this.fillTo40Courses();
+        this.fillTo48Courses();
     }
 
     getOptimizedScore(){

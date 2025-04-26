@@ -89,8 +89,8 @@ async function displayOptimizedAverageAndScore() {
     const score = await calculateOptimizedScore();
     const average = await calculateOptimizedAverage();
 
-    document.getElementById("points").innerHTML = `${score}/600`;
-    document.getElementById("mark").innerHTML = `${average} Points`;
+    document.getElementById("points").innerHTML = `${score} Points`;
+    document.getElementById("mark").innerHTML = `${average.toFixed(2)} Points`;
 }
 
 let initDisplayResult = new Promise(function(myResolve, myReject) {

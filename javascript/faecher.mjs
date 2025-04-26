@@ -1,3 +1,4 @@
+import { Kurs } from "./kurs.mjs";
 
 export class Fach {
 
@@ -65,16 +66,12 @@ export class Fach {
         return result;
     }
 
-    get fachTyp(){
-        return this.#fachTyp;
-    }
-
     kurs(index){
         return this.#halbjahre[index];
     }
 
     removeCourse(index){
-        this.#halbjahre.splice(index, 1);
+        this.#halbjahre[index] = new Kurs(-1, false, false);
     }
 
     copy() {
