@@ -74,6 +74,15 @@ export class Fach {
     }
 
     removeCourse(index){
-        this.#halbjahre.splice(index);
+        this.#halbjahre.splice(index, 1);
+    }
+
+    copy() {
+        return new Fach(
+            this.#fachTyp.copy(),
+            this.#isLeistungsfach,
+            this.#muendlichePruefung,
+            this.#halbjahre.map(halbjahr => halbjahr.copy ? halbjahr.copy() : { ...halbjahr })
+        );
     }
 }

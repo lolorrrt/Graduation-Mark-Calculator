@@ -23,6 +23,10 @@ export class Kurs {
     get isBelegt(){
         return this.#isBelegt;
     }
+
+    copy(){
+        return new Kurs(this.#note, this.#isUnterkurs, this.#isBelegt);
+    }
 }
 
 export class FachTyp {
@@ -47,6 +51,10 @@ export class FachTyp {
 
     get anforderungsbereich (){
         return this.#anforderungsbereich;
+    }
+
+    copy(){
+        return new FachTyp(this.#name, this.#type, this.#anforderungsbereich);
     }
 }
 

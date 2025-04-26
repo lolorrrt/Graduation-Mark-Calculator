@@ -2,6 +2,7 @@ import { Types } from "./kurs.mjs";
 
 export class subjectList {
     #listSubjects = [];
+
     constructor(listSubjects){
         this.#listSubjects = listSubjects;
     }
@@ -32,23 +33,13 @@ export class subjectList {
 
     get sortedLKs(){
         let sortedLKs = [];
-        this.#listSubjects.forEach((subject) => {
+        this.#listSubjects.forEach((subject, index) => {
             if(subject.isLeistungsfach){
                 sortedLKs.push(subject);
             }
         });
         sortedLKs = this.sortListByMittelwertPunkte(sortedLKs);
         return sortedLKs;
-    }
-
-    get bestLKs(){
-        let LKs = this.sortedLKs;
-        let points = [];
-        LKs.forEach(element, index =>{
-            points[index] = element.gesamtPunktzahl;
-        })
-        LKs.splice(points.indexOf(points.find(Math.min.apply(null, points))),1);
-        return LKs;        
     }
 
     get sortedMuendlPruefs(){
@@ -78,8 +69,7 @@ export class subjectList {
 
     getFachIndexByName(name){
         let index = this.#listSubjects.findIndex((subject) => { return this.hasName(subject, name)});
-        console.log(index);
-        console.log(name);
+        return index;
     }
 
     getFaecherListByType(type){
@@ -101,7 +91,20 @@ export class subjectList {
     }
 
     removeCourseOfFach(name, courseIndex){
-        this.#listSubjects[this.getFachIndexByName(name)] = this.#listSubjects[this.getFachIndexByName(name)].removeCourse(courseIndex);
+        const fachIndex = this.getFachIndexByName(name);
+        if (fachIndex !== -1) {
+            this.#listSubjects[fachIndex].removeCourse(courseIndex);
+        }
+    }
+
+    copy() {
+        // Erstelle eine neue Instanz von subjectList
+        const copiedList = new subjectList([]);
+        // Kopiere die Inhalte von #listSubjects
+        copiedList.#listSubjects = this.#listSubjects.map(subject => {
+            return subject.copy ? subject.copy() : { ...subject };
+        });
+        return copiedList;
     }
 }
 
@@ -113,7 +116,7 @@ export class selection{
 
     constructor(listSubjects){
         this.#subjects = listSubjects;
-        this.#availableFaecherForScoring = listSubjects;
+        this.#availableFaecherForScoring = listSubjects.copy();
     }
 
     checkForError (){
@@ -130,7 +133,7 @@ export class selection{
     addFachNotLKOrMdlToScoreList(name, courseAmount){
         let fachToAdd = this.#subjects.getFachNotLKOrMdl(name);
         if(fachToAdd != false) {
-            coursesOfFachToAdd = fachToAdd.belegtCourseList.sort(function (a, b) {b.note - a.note});
+            let coursesOfFachToAdd = fachToAdd.belegteKurseList.sort(function (a, b) {b.note - a.note});
             for(let i = 0; i<coursesOfFachToAdd.length && i<courseAmount; i++){
                 this.#scoreCourseList.push(kurs);
                 this.#availableFaecherForScoring.removeCourseOfFach(fachToAdd.name, i);
@@ -138,18 +141,20 @@ export class selection{
         }
     }
 
-    addCoursesOfSubjectToList(subject){
+    addCoursesOfSubjectToList(subject, removeCourses = true){
         let belegtCourseList = subject.belegteKurseList;
         for(let i = 0; i < belegtCourseList.length; i++){
             this.#scoreCourseList.push(belegtCourseList[i]);
-            this.#availableFaecherForScoring.removeCourseOfFach(subject.name, i);
+            if (removeCourses) {
+                this.#availableFaecherForScoring.removeCourseOfFach(subject.name, i);
+            }
         }
     }
 
     addBestCoursesOfSubjectToList(subject, amountToAdd){
-        if(subject.belegtCourseList == undefined)
+        if(subject.belegteKurseList == undefined)
             return;
-        let sortedCourses = subject.belegtCourseList.sort(function (a, b) { return b.note - a.note});
+        let sortedCourses = subject.belegteKurseList.sort(function (a, b) { return b.note - a.note});
         for(let i = 0; i<sortedCourses.length && i<amountToAdd; i++){
             this.#scoreCourseList.push(sortedCourses[i]);
             this.#availableFaecherForScoring.removeCourseOfFach(subject.name, i);
@@ -162,23 +167,35 @@ export class selection{
             }, 0);
     }
 
+    calcScoreString(){
+        return `${this.getPointSum()}/${this.#scoreCourseList.length*15}`;
+    }
+
     calcScore(){
         return this.getPointSum()/this.#scoreCourseList.length;
     }
 
     fillTo40Courses(){
+        // Get all belgete kurse
+        let allLeftCourses = this.#availableFaecherForScoring.listSubjects.map(subject => subject.belegteKurseList).flat();
 
+        // Sort the courses by their note
+        allLeftCourses.sort((a, b) => b.note - a.note);
+
+        // Add courses to the score list until it reaches 40
+        for (let i = 0; i < allLeftCourses.length && this.#scoreCourseList.length < 40; i++) {
+            this.#scoreCourseList.push(allLeftCourses[i]);
+        }
     }
 
-    getOptimizedAverage(){
-        let coursesForScoring = [];
+    prepareScoreList(){
         // Alle LKs zu den bewertenden Kursen hinzufügen
         this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[0]);
         this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1]);
         this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[2]);
         // Die zwei besten LKs nocheinmal hinzufügen
-        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[0]);
-        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1]);
+        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[0], false);
+        this.addCoursesOfSubjectToList(this.#subjects.sortedLKs[1], false);
 
         // Alle Kurse der mündlichen Prüfungsfächer hinzufügen
         this.addCoursesOfSubjectToList(this.#subjects.sortedMuendlPruefs[0]);
@@ -199,7 +216,15 @@ export class selection{
         this.addBestCoursesOfSubjectToList(this.#subjects.getFaecherListByTypeNotLKOrMdlSorted(Types.Kuenstlerisch)[0], 2);
 
         this.fillTo40Courses();
-        
+    }
+
+    getOptimizedScore(){
+        this.prepareScoreList();
+        return this.calcScoreString();
+    }
+
+    getOptimizedAverage(){
+        this.prepareScoreList();
         return this.calcScore();
     }
 }
